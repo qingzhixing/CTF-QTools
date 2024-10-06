@@ -56,4 +56,23 @@ for height, width in posible_hw:
         print(f"Width: {width}")
         print("Height(hex): " + "{:08X}".format(height))
         print("Width(hex): " + "{:08X}".format(width))
+
+        # write new PNG file
+        new_binary_data = (
+            PNG_SIGNATURE
+            + binary_data[8:12]
+            + IHDR_Signature
+            + struct.pack(">i", width)
+            + struct.pack(">i", height)
+            + other_attributes
+            + binary_data[29:]
+        )
+
+        with open(
+            args.file_path.replace(".png", f"_blasted_{height}_{width}.png"), "wb"
+        ) as f:
+            f.write(new_binary_data)
+
+        print("New PNG file saved.")
+
         exit()
